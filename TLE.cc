@@ -48,6 +48,7 @@ int wtoi2(const wchar_t* s, int curs, int len) {
   }
   wchar_t buf[S_MAX] = {0};
   for (int i = 0; i < len; ++i) buf[i] = s[curs + i];
+  buf[len + 1] = L'\0';
   return _wtoi(buf);
 }
   // The wtof with range.
@@ -57,21 +58,38 @@ double wtof2(const wchar_t* s, int curs, int len) {
   }
   wchar_t buf[S_MAX] = {0};
   for (int i = 0; i < len; ++i) buf[i] = s[curs + i];
+  buf[len + 1] = L'\0';
   return _wtof(buf);
 }
 };
 bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   assert(output);
-  wchar_t buf_1[10][S_MAX] = {0};
+  wchar_t buf_1[9][S_MAX] = {0};
   wchar_t buf_2[10][S_MAX] = {0};
   wchar_t tmp[S_MAX] = {0};
   // The line 0 is processed.
   output->name = input.line_0;
+#if 1
+  wprintf(L"Debug:\n");
+  wprintf(L"line_0:%s\n", input.line_0.c_str());
+#endif
   // The line 1 is processed.
-  swscanf_s(input.line_1.c_str(), L"%s%s%s%s%s%s%s%s%s%s",
+  swscanf_s(input.line_1.c_str(), L"%s%s%s%s%s%s%s%s%s",
             buf_1[0], S_MAX, buf_1[1], S_MAX, buf_1[2], S_MAX, buf_1[3], S_MAX,
             buf_1[4], S_MAX, buf_1[5], S_MAX, buf_1[6], S_MAX, buf_1[7], S_MAX,
-            buf_1[8], S_MAX, buf_1[9], S_MAX);
+            buf_1[8], S_MAX);
+#if 1
+  wprintf(L"line_1:%s\n", input.line_1.c_str());
+  wprintf(L"buf_1[0]:%s\n", buf_1[0]);
+  wprintf(L"buf_1[1]:%s\n", buf_1[1]);
+  wprintf(L"buf_1[2]:%s\n", buf_1[2]);
+  wprintf(L"buf_1[3]:%s\n", buf_1[3]);
+  wprintf(L"buf_1[4]:%s\n", buf_1[4]);
+  wprintf(L"buf_1[5]:%s\n", buf_1[5]);
+  wprintf(L"buf_1[6]:%s\n", buf_1[6]);
+  wprintf(L"buf_1[7]:%s\n", buf_1[7]);
+  wprintf(L"buf_1[8]:%s\n", buf_1[8]);
+#endif
   // The catalog number.
   output->catalog_num = wtoi2(buf_1[1], 0, 5);
   // The military secret level.
@@ -79,31 +97,48 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   // Ids.
   output->id_1 = wtoi2(buf_1[2], 0, 2);
   output->id_2 = wtoi2(buf_1[2], 2, 3);
-  output->id_3 = wtoi2(buf_1[2], 5, 3);
+  output->id_3[0] = buf_1[2][5];
+  output->id_3[1] = buf_1[2][6];
+  output->id_3[2] = buf_1[2][7];
   // The epoch.
   output->epoch_1 = wtoi2(buf_1[3], 0, 2);
   output->epoch_2 = wtof2(buf_1[3], 2, 12);
   // The mean motion differential level 1.
-  tmp[0] = buf_1[4][0];
-  tmp[1] = L'0';
-  tmp[2] = buf_1[4][1];
-  for (int i = 0; i < 8; ++i) tmp[3 + i] = buf_1[4][2 + i];
+  if (buf_1[4][0] == L'-') {
+    tmp[0] = L'-';
+    tmp[1] = L'0';
+    tmp[2] = L'.';
+    for (int i = 0; i < 8; ++i) tmp[3 + i] = buf_1[4][2 + i];
+  } else {
+    tmp[0] = L'0';
+    tmp[1] = L'.';
+    for (int i = 0; i < 8; ++i) tmp[2 + i] = buf_1[4][1 + i];
+  }
 #if 1
-  wprintf(L"mm_1 tmp:%s", tmp);
+  wprintf(L"mm_1 tmp:%s\n", tmp);
 #endif
-  output->mm_1 = wtof2(tmp, 0, 10);
+  output->mm_1 = _wtof(tmp);
   // The mean motion differential level 2.
-  tmp[0] = buf_1[5][0];
-  tmp[1] = L'0';
-  tmp[2] = L'.';
-  for (int i = 0; i < 5; ++i) tmp[3 + i] = buf_1[5][1 + i];
-  tmp[9] = L'E';
-  tmp[10] = buf_1[5][6];
-  tmp[11] = buf_1[5][7];
+  if (buf_1[5][0] == L'-') {
+    tmp[0] = L'-';
+    tmp[1] = L'0';
+    tmp[2] = L'.';
+    for (int i = 0; i < 5; ++i) tmp[3 + i] = buf_1[5][1 + i];
+    tmp[8] = L'E';
+    tmp[9] = buf_1[5][6];  // L'+' or L'-'.
+    tmp[10] = buf_1[5][7];
+  } else {
+    tmp[0] = L'0';
+    tmp[1] = L'.';
+    for (int i = 0; i < 5; ++i) tmp[2 + i] = buf_1[5][i];
+    tmp[7] = L'E';
+    tmp[8] = buf_1[5][6];  // L'+' or L'-'.
+    tmp[9] = buf_1[5][7];
+  }
 #if 1
-  wprintf(L"mm_2 tmp:%s", tmp);
+  wprintf(L"mm_2 tmp:%s\n", tmp);
 #endif
-  output->mm_1 = wtof2(tmp, 0, 10);
+  output->mm_2 = _wtof(tmp);
   // The line 2 is processed.
   return true;
 }

@@ -10,7 +10,6 @@
 int wmain(int argc, char* argv[]) {
   InputTLE input;
   OutputTLE output;
-  ReadTLE(input, &output);
   // The Japanese is used for output.
   setlocale(LC_ALL, "Japanese");
   // The test dat is set.
@@ -22,16 +21,18 @@ int wmain(int argc, char* argv[]) {
     L"1 41932U 98067KU  17249.55458570  .00023584  00000-0  27558-3 0  9993";
   input.line_2 =
     L"2 41932  51.6416 345.8089 0004200 218.6727 141.3966 15.61468125 36244";
+  // The TLE in read.
+  ReadTLE(input, &output);
   // The line 0 information is shown.
   wprintf(L"Line 0:\n");
   wprintf(L"衛星名:%s\n", output.name.c_str());
   // The line 1 information is shown.
   wprintf(L"\nLine 1:\n");
   wprintf(L"衛星カタログ番号:%d\n", output.catalog_num);
-  wprintf(L"軍事機密種別:%d\n", output.mil_level);
+  wprintf(L"軍事機密種別:%c\n", output.mil_level);
   wprintf(L"国際識別番号（打ち上げ年下二桁）:%d\n", output.id_1);
   wprintf(L"国際識別番号（打ち上げ通番）:%d\n", output.id_2);
-  wprintf(L"国際識別番号（飛翔体通番）:%d\n", output.id_3);
+  wprintf(L"国際識別番号（飛翔体通番）:%s\n", output.id_3);
   wprintf(L"元期（年下二桁）:%d\n", output.epoch_1);
   wprintf(L"元期（通日）:%lf\n", output.epoch_2);
   wprintf(L"平均運動一次微分値の1/2倍:%lf\n", output.mm_1);

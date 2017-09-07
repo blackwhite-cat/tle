@@ -17,13 +17,13 @@ struct OutputTLE {
   int catalog_num;  // line 1, column 3-7.
   int id_1;  // line 1, column 10-11.
   int id_2;  // line 1, column 12-14.
-  int id_3;  // line 1, column 15-18.
   int model;  // line 1, column 63.
   int s_num;  // line 1, column 65-68.
   int epoch_1;  // line 1, column 19-21.
   int check_sum_1;  // line 1, column 69.
   int check_sum_2;  // line 2, column 69.
   wchar_t mil_level;  // line 1, column 8-9.
+  wchar_t id_3[3];  // line 1, column 15-18.
   double epoch_2;  // line 1, column 21-33.
   double mm_1;  // line 1, column 34-44.
   double mm_2;  // line 1, column 45-53.
