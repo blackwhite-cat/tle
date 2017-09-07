@@ -18,9 +18,9 @@ int wmain(int argc, char* argv[]) {
   // http://celestrak.com/NORAD/elements/cubesat.txt
   input.line_0 = L"ITF-2                   ";
   input.line_1 =
-    L"1 41932U 98067KU  17249.55458570  .00023584  00000-0  27558-3 0  9993";
+    L"1 41932U 98067KU  17249.55458570  .00023584  00000-0  27558-3 0  9993 ";
   input.line_2 =
-    L"2 41932  51.6416 345.8089 0004200 218.6727 141.3966 15.61468125 36244";
+    L"2 41932  51.6416 345.8089 0004200 218.6727 141.3966 15.61468125 36244 ";
   // The TLE in read.
   ReadTLE(input, &output);
   // The line 0 information is shown.
@@ -35,9 +35,9 @@ int wmain(int argc, char* argv[]) {
   wprintf(L"国際識別番号（飛翔体通番）:%s\n", output.id_3);
   wprintf(L"元期（年下二桁）:%d\n", output.epoch_1);
   wprintf(L"元期（通日）:%lf\n", output.epoch_2);
-  wprintf(L"平均運動一次微分値の1/2倍:%lf\n", output.mm_1);
-  wprintf(L"平均運動二次微分値の1/6倍:%lf\n", output.mm_2);
-  wprintf(L"抗力項:%lf\n", output.b_star);
+  wprintf(L"平均運動一次微分値の1/2倍:%.8lf\n", output.mm_1);
+  wprintf(L"平均運動二次微分値の1/6倍:%.8lf\n", output.mm_2);
+  wprintf(L"抗力項:%.8lf\n", output.b_star);
   wprintf(L"軌道モデル:%d\n", output.model);
   wprintf(L"軌道要素通番:%d\n", output.s_num);
   wprintf(L"Line1チェックサム:%d\n", output.check_sum_1);

@@ -80,15 +80,9 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
             buf_1[8], S_MAX);
 #if 1
   wprintf(L"line_1:%s\n", input.line_1.c_str());
-  wprintf(L"buf_1[0]:%s\n", buf_1[0]);
-  wprintf(L"buf_1[1]:%s\n", buf_1[1]);
-  wprintf(L"buf_1[2]:%s\n", buf_1[2]);
-  wprintf(L"buf_1[3]:%s\n", buf_1[3]);
-  wprintf(L"buf_1[4]:%s\n", buf_1[4]);
-  wprintf(L"buf_1[5]:%s\n", buf_1[5]);
-  wprintf(L"buf_1[6]:%s\n", buf_1[6]);
-  wprintf(L"buf_1[7]:%s\n", buf_1[7]);
-  wprintf(L"buf_1[8]:%s\n", buf_1[8]);
+  for (int i = 0; i < 9; ++i) {
+    wprintf(L"buf_1[%d]:%s\n", i, buf_1[i]);
+  }
 #endif
   // The catalog number.
   output->catalog_num = wtoi2(buf_1[1], 0, 5);
@@ -104,41 +98,68 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   output->epoch_1 = wtoi2(buf_1[3], 0, 2);
   output->epoch_2 = wtof2(buf_1[3], 2, 12);
   // The mean motion differential level 1.
-  if (buf_1[4][0] == L'-') {
-    tmp[0] = L'-';
-    tmp[1] = L'0';
-    tmp[2] = L'.';
-    for (int i = 0; i < 8; ++i) tmp[3 + i] = buf_1[4][2 + i];
-  } else {
+  if ((buf_1[4][0] != L'+') && (buf_1[4][0] != L'-')) {
     tmp[0] = L'0';
     tmp[1] = L'.';
     for (int i = 0; i < 8; ++i) tmp[2 + i] = buf_1[4][1 + i];
+  } else {
+    tmp[0] = buf_1[4][0];  // L'+' or L'-'.
+    tmp[1] = L'0';
+    tmp[2] = L'.';
+    for (int i = 0; i < 8; ++i) tmp[3 + i] = buf_1[4][2 + i];
   }
 #if 1
   wprintf(L"mm_1 tmp:%s\n", tmp);
 #endif
   output->mm_1 = _wtof(tmp);
   // The mean motion differential level 2.
-  if (buf_1[5][0] == L'-') {
-    tmp[0] = L'-';
-    tmp[1] = L'0';
-    tmp[2] = L'.';
-    for (int i = 0; i < 5; ++i) tmp[3 + i] = buf_1[5][1 + i];
-    tmp[8] = L'E';
-    tmp[9] = buf_1[5][6];  // L'+' or L'-'.
-    tmp[10] = buf_1[5][7];
-  } else {
+  if ((buf_1[5][0] != L'+') && (buf_1[5][0] != L'-')) {
     tmp[0] = L'0';
     tmp[1] = L'.';
     for (int i = 0; i < 5; ++i) tmp[2 + i] = buf_1[5][i];
     tmp[7] = L'E';
     tmp[8] = buf_1[5][6];  // L'+' or L'-'.
     tmp[9] = buf_1[5][7];
+  } else {
+    tmp[0] = buf_1[5][0];  // L'+' or L'-'.
+    tmp[1] = L'0';
+    tmp[2] = L'.';
+    for (int i = 0; i < 5; ++i) tmp[3 + i] = buf_1[5][1 + i];
+    tmp[8] = L'E';
+    tmp[9] = buf_1[5][6];  // L'+' or L'-' or L' '.
+    tmp[10] = buf_1[5][7];  // numeric or L' '.
   }
 #if 1
   wprintf(L"mm_2 tmp:%s\n", tmp);
 #endif
   output->mm_2 = _wtof(tmp);
+  // The drag.
+  if ((buf_1[6][0] != L'+') && (buf_1[6][0] != L'-')) {
+    tmp[0] = L'0';
+    tmp[1] = L'.';
+    for (int i = 0; i < 7; ++i) tmp[2 + i] = buf_1[6][i];
+    tmp[9] = L'E';
+    tmp[10] = buf_1[6][6];  // L'+' or L'-' or L' '.
+    tmp[11] = buf_1[6][7];
+  } else {
+    tmp[0] = buf_1[6][0];  // L'+' or L'-'.
+    tmp[1] = L'0';
+    tmp[2] = L'.';
+    for (int i = 0; i < 7; ++i) tmp[3 + i] = buf_1[6][1 + i];
+    tmp[10] = L'E';
+    tmp[11] = buf_1[6][6];  // L'+' or L'-' or L' '.
+    tmp[12] = buf_1[6][7];  // numeric or L' '.
+  }
+#if 1
+  wprintf(L"b_star tmp:%s\n", tmp);
+#endif
+  output->b_star = _wtof(tmp);
+  // The simulation model.
+  output->model = _wtoi(buf_1[7]);
+  // The TLE serial number.
+  output->s_num = wtoi2(buf_1[8], 0, 4);
+  // The TLE check sum.
+  output->check_sum_1 = wtoi2(buf_1[8], 5, 1);
   // The line 2 is processed.
   return true;
 }
