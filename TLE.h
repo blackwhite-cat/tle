@@ -20,8 +20,6 @@ struct OutputTLE {
   int model;  // line 1, column 63.
   int s_num;  // line 1, column 65-68.
   int epoch_1;  // line 1, column 19-21.
-  int check_sum_1;  // line 1, column 69.
-  int check_sum_2;  // line 2, column 69.
   wchar_t mil_level;  // line 1, column 8-9.
   wchar_t id_3[3];  // line 1, column 15-18.
   double epoch_2;  // line 1, column 21-33.
