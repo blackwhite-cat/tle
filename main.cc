@@ -4,9 +4,9 @@
   // @date 2017-09-07 12:52:18
   // Copyright 2017 Mamoru Kaminaga
   // Note: Save this file with BOM.
-#include "./tle.h"
 #include <stdio.h>
 #include <locale.h>
+#include "./tle.h"
 int wmain(int argc, char* argv[]) {
   InputTLE input;
   OutputTLE output;
