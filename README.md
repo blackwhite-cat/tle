@@ -6,7 +6,7 @@ TLE(2行軌道要素形式)から人工衛星の各種軌道要素を取得す�
 ----
 TLEは[NORAD Two-Line Element Sets](http://celestrak.com/NORAD/elements/)などから入手することができる<br>
 TLEは下図のようなフォーマットで記述されている<br>
-![tle](data/TLE.png)<br>
+![tle](doc/TLE.png)<br>
 このプログラムはこれらのデータを解読する<br>
 Line 1とLine 2のチェックサムは利用せずに捨てている
 

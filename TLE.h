@@ -22,7 +22,7 @@ struct OutputTLE {
   int epoch_1;  // line 1, column 19-21.
   int rev;  // line 2, column 64-68.
   wchar_t mil_level;  // line 1, column 8-9.
-  wchar_t id_3[3];  // line 1, column 15-18.
+  wchar_t id_3[4];  // line 1, column 15-18.
   double epoch_2;  // line 1, column 21-33.
   double mm_1;  // line 1, column 34-44.
   double mm_2;  // line 1, column 45-53.

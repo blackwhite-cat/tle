@@ -15,11 +15,7 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   wchar_t tmp[S_MAX] = {0};
   // The line 0 is processed.
   output->name = input.line_0;
-#if 1
-  wprintf(L"Debug:\n");
-  wprintf(L"line_0:%s\n", input.line_0.c_str());
-#endif
-  // The lines are expanded.
+  // The line 1 is expanded.
   input.line_1.copy(buf_1[0], 1, 0);  // The line number (Always 1).
   input.line_1.copy(buf_1[1], 5, 2);  // The catalog number.
   input.line_1.copy(buf_1[2], 1, 7);  // The military secret level.
@@ -33,7 +29,7 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   input.line_1.copy(buf_1[10], 8, 53);  // The drag coefficient.
   input.line_1.copy(buf_1[11], 1, 62);  // The simulation model.
   input.line_1.copy(buf_1[12], 4, 64);  // The TLE serial number.
-
+  // The line 2 is expanded.
   input.line_2.copy(buf_2[0], 1, 0);  // The line number (Always 2).
   input.line_2.copy(buf_2[1], 5, 2);  // The catalog number (Same as buf_1[1]).
   input.line_2.copy(buf_2[2], 8, 8);  // The inclination.
@@ -43,17 +39,6 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   input.line_2.copy(buf_2[6], 8, 43);  // The mean anomaly.
   input.line_2.copy(buf_2[7], 11, 52);  // The mean motion.
   input.line_2.copy(buf_2[8], 5, 63);  // The rev count.
-#if 1
-  wprintf(L"Debug:\n");
-  wprintf(L"line_1:%s\n", input.line_1.c_str());
-  for (int i = 0; i < 13; ++i) {
-    wprintf(L"buf_1[%d]:%s\n", i, buf_1[i]);
-  }
-  wprintf(L"line_2:%s\n", input.line_2.c_str());
-  for (int i = 0; i < 9; ++i) {
-    wprintf(L"buf_2[%d]:%s\n", i, buf_2[i]);
-  }
-#endif
   // The catalog number.
   output->catalog_num = _wtoi(buf_1[1]);
   // The military secret level.
@@ -86,9 +71,6 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
     }
     tmp[8] = buf_1[9][7];
   }
-#if 1
-  wprintf(L"mm_2 tmp:%s\n", tmp);
-#endif
   output->mm_2 = _wtof(tmp);
   // The drag.
   for (int i = 0; i < 6; ++i) tmp[i] = buf_1[10][i];
@@ -103,9 +85,6 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
     }
     tmp[8] = buf_1[10][7];
   }
-#if 1
-  wprintf(L"b_star tmp:%s\n", tmp);
-#endif
   output->b_star = _wtof(tmp);
   // The simulation model.
   output->model = _wtoi(buf_1[11]);
@@ -121,9 +100,6 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   tmp[1] = L'.';
   for (int i = 0; i < 7; ++i) tmp[2 + i] = buf_2[4][i];
   tmp[9] = L'\0';
-#if 1
-  wprintf(L"eccn tmp:%s\n", tmp);
-#endif
   output->eccn = _wtof(tmp);
   // The argument of perigee.
   output->argp = _wtof(buf_2[5]);
