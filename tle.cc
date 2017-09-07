@@ -50,7 +50,7 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
     wprintf(L"buf_1[%d]:%s\n", i, buf_1[i]);
   }
   wprintf(L"line_2:%s\n", input.line_2.c_str());
-  for (int i = 0; i < 8; ++i) {
+  for (int i = 0; i < 9; ++i) {
     wprintf(L"buf_2[%d]:%s\n", i, buf_2[i]);
   }
 #endif
@@ -75,39 +75,33 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   output->mm_1 = _wtof(buf_1[8]);
   // The mean motion differential level 2.
   for (int i = 0; i < 6; ++i) tmp[i] = buf_1[9][i];
-  tmp[7] = L'E';
   if (buf_1[9][7] == L' ') {
-    tmp[8] = L'\0';
+    tmp[6] = L'\0';
   } else {
+    tmp[6] = L'E';
     if (buf_1[9][6] == L'-') {
-      tmp[8] = L'-';
+      tmp[7] = L'-';
     } else {
-      tmp[8] = L'+';
+      tmp[7] = L'+';
     }
-    tmp[9] = buf_1[9][7];  // numeric or L' '.
+    tmp[8] = buf_1[9][7];
   }
 #if 1
   wprintf(L"mm_2 tmp:%s\n", tmp);
 #endif
   output->mm_2 = _wtof(tmp);
   // The drag.
-  if ((buf_1[10][0] != L'+') && (buf_1[10][0] != L'-')) {
-    tmp[0] = L'0';
-    tmp[1] = L'.';
-    for (int i = 0; i < 7; ++i) tmp[2 + i] = buf_1[10][i];
-    tmp[9] = L'E';
-    tmp[10] = buf_1[10][6];  // L'+' or L'-' or L' '.
-    tmp[11] = buf_1[10][7];
-    tmp[12] = L'\0';
+  for (int i = 0; i < 6; ++i) tmp[i] = buf_1[10][i];
+  if (buf_1[10][7] == L' ') {
+    tmp[6] = L'\0';
   } else {
-    tmp[0] = buf_1[10][0];  // L'+' or L'-'.
-    tmp[1] = L'0';
-    tmp[2] = L'.';
-    for (int i = 0; i < 7; ++i) tmp[3 + i] = buf_1[10][1 + i];
-    tmp[10] = L'E';
-    tmp[11] = buf_1[10][6];  // L'+' or L'-' or L' '.
-    tmp[12] = buf_1[10][7];  // numeric or L' '.
-    tmp[13] = L'\0';
+    tmp[6] = L'E';
+    if (buf_1[10][6] == L'-') {
+      tmp[7] = L'-';
+    } else {
+      tmp[7] = L'+';
+    }
+    tmp[8] = buf_1[10][7];
   }
 #if 1
   wprintf(L"b_star tmp:%s\n", tmp);
