@@ -8,32 +8,10 @@
 #include <string>
 #include "./tle.h"
 #define S_MAX  (32)
-namespace {
-  // The wtoi with range.
-int wtoi2(const wchar_t* s, int curs, int len) {
-  if ((curs < 0) || (len < 1) || (curs + len) > static_cast<int>(wcslen(s))) {
-    return -1;
-  }
-  wchar_t buf[S_MAX] = {0};
-  for (int i = 0; i < len; ++i) buf[i] = s[curs + i];
-  buf[len + 1] = L'\0';
-  return _wtoi(buf);
-}
-  // The wtof with range.
-double wtof2(const wchar_t* s, int curs, int len) {
-  if ((curs < 0) || (len < 1) || (curs + len) > static_cast<int>(wcslen(s))) {
-    return -1;
-  }
-  wchar_t buf[S_MAX] = {0};
-  for (int i = 0; i < len; ++i) buf[i] = s[curs + i];
-  buf[len + 1] = L'\0';
-  return _wtof(buf);
-}
-}  // namespace
 bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   assert(output);
-  wchar_t buf_1[9][S_MAX] = {0};
-  wchar_t buf_2[8][S_MAX] = {0};
+  wchar_t buf_1[13][S_MAX] = {0};
+  wchar_t buf_2[9][S_MAX] = {0};
   wchar_t tmp[S_MAX] = {0};
   // The line 0 is processed.
   output->name = input.line_0;
@@ -41,87 +19,94 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   wprintf(L"Debug:\n");
   wprintf(L"line_0:%s\n", input.line_0.c_str());
 #endif
-  // The line 1 is processed.
-  swscanf_s(input.line_1.c_str(), L"%s%s%s%s%s%s%s%s%s",
-            buf_1[0], S_MAX, buf_1[1], S_MAX, buf_1[2], S_MAX, buf_1[3], S_MAX,
-            buf_1[4], S_MAX, buf_1[5], S_MAX, buf_1[6], S_MAX, buf_1[7], S_MAX,
-            buf_1[8], S_MAX);
+  // The lines are expanded.
+  input.line_1.copy(buf_1[0], 1, 0);  // The line number (Always 1).
+  input.line_1.copy(buf_1[1], 5, 2);  // The catalog number.
+  input.line_1.copy(buf_1[2], 1, 7);  // The military secret level.
+  input.line_1.copy(buf_1[3], 2, 9);  // The international id 1.
+  input.line_1.copy(buf_1[4], 3, 11);  // The international id 2.
+  input.line_1.copy(buf_1[5], 3, 14);  // The international id 3.
+  input.line_1.copy(buf_1[6], 2, 18);  // The epoch 1.
+  input.line_1.copy(buf_1[7], 12, 20);  // The epoch 2.
+  input.line_1.copy(buf_1[8], 10, 33);  // The mean motion differential 1.
+  input.line_1.copy(buf_1[9], 8, 44);  // The mean motion differential 2.
+  input.line_1.copy(buf_1[10], 8, 53);  // The drag coefficient.
+  input.line_1.copy(buf_1[11], 1, 62);  // The simulation model.
+  input.line_1.copy(buf_1[12], 4, 64);  // The TLE serial number.
+
+  input.line_2.copy(buf_2[0], 1, 0);  // The line number (Always 2).
+  input.line_2.copy(buf_2[1], 5, 2);  // The catalog number (Same as buf_1[1]).
+  input.line_2.copy(buf_2[2], 8, 8);  // The inclination.
+  input.line_2.copy(buf_2[3], 8, 17);  // The right ascension of ascending node.
+  input.line_2.copy(buf_2[4], 7, 26);  // The eccentricity.
+  input.line_2.copy(buf_2[5], 8, 34);  // The argument of perigee.
+  input.line_2.copy(buf_2[6], 8, 43);  // The mean anomaly.
+  input.line_2.copy(buf_2[7], 11, 52);  // The mean motion.
+  input.line_2.copy(buf_2[8], 5, 63);  // The rev count.
 #if 1
+  wprintf(L"Debug:\n");
   wprintf(L"line_1:%s\n", input.line_1.c_str());
-  for (int i = 0; i < 9; ++i) {
+  for (int i = 0; i < 13; ++i) {
     wprintf(L"buf_1[%d]:%s\n", i, buf_1[i]);
+  }
+  wprintf(L"line_2:%s\n", input.line_2.c_str());
+  for (int i = 0; i < 8; ++i) {
+    wprintf(L"buf_2[%d]:%s\n", i, buf_2[i]);
   }
 #endif
   // The catalog number.
-  output->catalog_num = wtoi2(buf_1[1], 0, 5);
+  output->catalog_num = _wtoi(buf_1[1]);
   // The military secret level.
-  output->mil_level = buf_1[1][5];
-  // Ids.
-  output->id_1 = wtoi2(buf_1[2], 0, 2);
-  output->id_2 = wtoi2(buf_1[2], 2, 3);
-  output->id_3[0] = buf_1[2][5];
-  output->id_3[1] = buf_1[2][6];
-  output->id_3[2] = buf_1[2][7];
-  // The epoch.
-  output->epoch_1 = wtoi2(buf_1[3], 0, 2);
-  output->epoch_2 = wtof2(buf_1[3], 2, 12);
+  output->mil_level = buf_1[2][0];
+  // The international id 1.
+  output->id_1 = _wtoi(buf_1[3]);
+  // The international id 2.
+  output->id_2 = _wtoi(buf_1[4]);
+  // The international id 3.
+  output->id_3[0] = buf_1[5][0];
+  output->id_3[1] = buf_1[5][1];
+  output->id_3[2] = buf_1[5][2];
+  output->id_3[3] = L'\0';
+  // The epoch 1.
+  output->epoch_1 = _wtoi(buf_1[6]);
+  // The epoch 2.
+  output->epoch_2 = _wtof(buf_1[7]);
   // The mean motion differential level 1.
-  if ((buf_1[4][0] != L'+') && (buf_1[4][0] != L'-')) {
-    tmp[0] = L'0';
-    tmp[1] = L'.';
-    for (int i = 0; i < 8; ++i) tmp[2 + i] = buf_1[4][1 + i];
-    tmp[10] = L'\0';
-  } else {
-    tmp[0] = buf_1[4][0];  // L'+' or L'-'.
-    tmp[1] = L'0';
-    tmp[2] = L'.';
-    for (int i = 0; i < 8; ++i) tmp[3 + i] = buf_1[4][2 + i];
-    tmp[11] = L'\0';
-  }
-#if 1
-  wprintf(L"mm_1 tmp:%s\n", tmp);
-#endif
-  output->mm_1 = _wtof(tmp);
+  output->mm_1 = _wtof(buf_1[8]);
   // The mean motion differential level 2.
-  if ((buf_1[5][0] != L'+') && (buf_1[5][0] != L'-')) {
-    tmp[0] = L'0';
-    tmp[1] = L'.';
-    for (int i = 0; i < 5; ++i) tmp[2 + i] = buf_1[5][i];
-    tmp[7] = L'E';
-    tmp[8] = buf_1[5][6];  // L'+' or L'-'.
-    tmp[9] = buf_1[5][7];
-    tmp[10] = L'\0';
+  for (int i = 0; i < 6; ++i) tmp[i] = buf_1[9][i];
+  tmp[7] = L'E';
+  if (buf_1[9][7] == L' ') {
+    tmp[8] = L'\0';
   } else {
-    tmp[0] = buf_1[5][0];  // L'+' or L'-'.
-    tmp[1] = L'0';
-    tmp[2] = L'.';
-    for (int i = 0; i < 5; ++i) tmp[3 + i] = buf_1[5][1 + i];
-    tmp[8] = L'E';
-    tmp[9] = buf_1[5][6];  // L'+' or L'-' or L' '.
-    tmp[10] = buf_1[5][7];  // numeric or L' '.
-    tmp[11] = L'\0';
+    if (buf_1[9][6] == L'-') {
+      tmp[8] = L'-';
+    } else {
+      tmp[8] = L'+';
+    }
+    tmp[9] = buf_1[9][7];  // numeric or L' '.
   }
 #if 1
   wprintf(L"mm_2 tmp:%s\n", tmp);
 #endif
   output->mm_2 = _wtof(tmp);
   // The drag.
-  if ((buf_1[6][0] != L'+') && (buf_1[6][0] != L'-')) {
+  if ((buf_1[10][0] != L'+') && (buf_1[10][0] != L'-')) {
     tmp[0] = L'0';
     tmp[1] = L'.';
-    for (int i = 0; i < 7; ++i) tmp[2 + i] = buf_1[6][i];
+    for (int i = 0; i < 7; ++i) tmp[2 + i] = buf_1[10][i];
     tmp[9] = L'E';
-    tmp[10] = buf_1[6][6];  // L'+' or L'-' or L' '.
-    tmp[11] = buf_1[6][7];
+    tmp[10] = buf_1[10][6];  // L'+' or L'-' or L' '.
+    tmp[11] = buf_1[10][7];
     tmp[12] = L'\0';
   } else {
-    tmp[0] = buf_1[6][0];  // L'+' or L'-'.
+    tmp[0] = buf_1[10][0];  // L'+' or L'-'.
     tmp[1] = L'0';
     tmp[2] = L'.';
-    for (int i = 0; i < 7; ++i) tmp[3 + i] = buf_1[6][1 + i];
+    for (int i = 0; i < 7; ++i) tmp[3 + i] = buf_1[10][1 + i];
     tmp[10] = L'E';
-    tmp[11] = buf_1[6][6];  // L'+' or L'-' or L' '.
-    tmp[12] = buf_1[6][7];  // numeric or L' '.
+    tmp[11] = buf_1[10][6];  // L'+' or L'-' or L' '.
+    tmp[12] = buf_1[10][7];  // numeric or L' '.
     tmp[13] = L'\0';
   }
 #if 1
@@ -129,22 +114,10 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
 #endif
   output->b_star = _wtof(tmp);
   // The simulation model.
-  output->model = _wtoi(buf_1[7]);
+  output->model = _wtoi(buf_1[11]);
   // The TLE serial number.
-  output->s_num = wtoi2(buf_1[8], 0, 4);
-  // The line 2 is processed.
-#if 1
-  wprintf(L"Debug:\n");
-#endif
-  swscanf_s(input.line_2.c_str(), L"%s%s%s%s%s%s%s%s",
-            buf_2[0], S_MAX, buf_2[1], S_MAX, buf_2[2], S_MAX, buf_2[3], S_MAX,
-            buf_2[4], S_MAX, buf_2[5], S_MAX, buf_2[6], S_MAX, buf_2[7], S_MAX);
-#if 1
-  wprintf(L"line_2:%s\n", input.line_2.c_str());
-  for (int i = 0; i < 8; ++i) {
-    wprintf(L"buf_2[%d]:%s\n", i, buf_2[i]);
-  }
-#endif
+  output->s_num = _wtoi(buf_1[12]);
+
   // The inclination.
   output->incl = _wtof(buf_2[2]);
   // The right ascension of ascending node.
@@ -163,8 +136,8 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   // The mean anomaly.
   output->ma = _wtof(buf_2[6]);
   // The mean motion.
-  output->mm = wtof2(buf_2[7], 0, 11);
+  output->mm = _wtof(buf_2[7]);
   // The rev count.
-  output->rev = wtoi2(buf_2[7], 11, 5);
+  output->rev = _wtoi(buf_2[8]);
   return true;
 }
