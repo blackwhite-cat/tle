@@ -12,42 +12,43 @@ void Test(const wchar_t* line_0, const wchar_t* line_1, const wchar_t* line_2){
   assert(line_0);
   assert(line_1);
   assert(line_2);
-  InputTLE input;
-  OutputTLE output;
-  input.line_0 = line_0;
-  input.line_1 = line_1;
-  input.line_2 = line_2;
-  // The TLE in read.
-  ReadTLE(input, &output);
+  // The TLE description structure is set.
+  sat::TLEDesc desc;
+  desc.line_0 = line_0;
+  desc.line_1 = line_1;
+  desc.line_2 = line_2;
+  // The TLE is read.
+  sat::TLEData tle;
+  sat::ReadTLE(desc, &tle);
   // The line 0 information is shown.
   wprintf(L"\n%s\n", line_0);
-  wprintf(L"衛星名:%s\n", output.name.c_str());
+  wprintf(L"衛星名:%s\n", tle.name.c_str());
   // The line 1 information is shown.
   wprintf(L"\n%s\n", line_1);
-  wprintf(L"衛星カタログ番号:%d\n", output.sat_num);
-  wprintf(L"軍事機密種別:%c\n", output.classification);
-  wprintf(L"国際識別番号（打ち上げ年下二桁）:%d\n", output.id_1);
-  wprintf(L"国際識別番号（打ち上げ通番）:%d\n", output.id_2);
-  wprintf(L"国際識別番号（飛翔体通番）:%s\n", output.id_3);
-  wprintf(L"元期（年下二桁）:%d\n", output.epoch_year);
-  wprintf(L"元期（通日）:%.8lf\n", output.epoch_days);
-  wprintf(L"平均運動一次微分値の1/2倍:%.8lf\n", output.ndot);
-  wprintf(L"平均運動二次微分値の1/6倍:%.8lf\n", output.nddot);
-  wprintf(L"抗力項:%.8lf\n", output.bstar);
-  wprintf(L"軌道モデル:%d\n", output.model);
-  wprintf(L"軌道要素通番:%d\n", output.s_num);
+  wprintf(L"衛星カタログ番号:%d\n", tle.sat_num);
+  wprintf(L"軍事機密種別:%c\n", tle.classification);
+  wprintf(L"国際識別番号（打ち上げ年下二桁）:%d\n", tle.id_1);
+  wprintf(L"国際識別番号（打ち上げ通番）:%d\n", tle.id_2);
+  wprintf(L"国際識別番号（飛翔体通番）:%s\n", tle.id_3);
+  wprintf(L"元期（年下二桁）:%d\n", tle.epoch_year);
+  wprintf(L"元期（通日）:%.8lf\n", tle.epoch_days);
+  wprintf(L"平均運動一次微分値の1/2倍:%.8lf\n", tle.ndot);
+  wprintf(L"平均運動二次微分値の1/6倍:%.8lf\n", tle.nddot);
+  wprintf(L"抗力項:%.8lf\n", tle.bstar);
+  wprintf(L"軌道モデル:%d\n", tle.model);
+  wprintf(L"軌道要素通番:%d\n", tle.s_num);
   // The line 2 information is shown.
   wprintf(L"\n%s\n", line_2);
-  wprintf(L"軌道傾斜角:%.8lf\n", output.inclo);
-  wprintf(L"昇交点赤経:%.8lf\n", output.nodeo);
-  wprintf(L"離心率:%.8lf\n", output.ecco);
-  wprintf(L"近地点引数:%.8lf\n", output.argpo);
-  wprintf(L"平均近点角:%.8lf\n", output.mo);
-  wprintf(L"平均運動:%.8lf\n", output.no);
-  wprintf(L"元期における通算周回数:%d\n", output.rev);
+  wprintf(L"軌道傾斜角:%.8lf\n", tle.inclo);
+  wprintf(L"昇交点赤経:%.8lf\n", tle.nodeo);
+  wprintf(L"離心率:%.8lf\n", tle.ecco);
+  wprintf(L"近地点引数:%.8lf\n", tle.argpo);
+  wprintf(L"平均近点角:%.8lf\n", tle.mo);
+  wprintf(L"平均運動:%.8lf\n", tle.no);
+  wprintf(L"元期における通算周回数:%d\n", tle.rev);
 }
 int wmain(int argc, char* argv[]) {
-  // The Japanese is used for output.
+  // The Japanese local is used for console output.
   setlocale(LC_ALL, "Japanese");
   // The test data is set.
   // TLE data from NORAD, acquired at 2017/9/7 14:00:00 (JST).
