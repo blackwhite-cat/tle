@@ -55,7 +55,7 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   // The epoch 1.
   output->epoch_year = _wtoi(buf_1[6]);
   // The epoch 2.
-  output->epcoh_days = _wtof(buf_1[7]);
+  output->epoch_days = _wtof(buf_1[7]);
   // The mean motion differential level 1.
   output->ndot = _wtof(buf_1[8]);
   // The mean motion differential level 2.

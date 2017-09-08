@@ -30,7 +30,7 @@ void Test(const wchar_t* line_0, const wchar_t* line_1, const wchar_t* line_2){
   wprintf(L"国際識別番号（打ち上げ通番）:%d\n", output.id_2);
   wprintf(L"国際識別番号（飛翔体通番）:%s\n", output.id_3);
   wprintf(L"元期（年下二桁）:%d\n", output.epoch_year);
-  wprintf(L"元期（通日）:%.8lf\n", output.epcoh_days);
+  wprintf(L"元期（通日）:%.8lf\n", output.epoch_days);
   wprintf(L"平均運動一次微分値の1/2倍:%.8lf\n", output.ndot);
   wprintf(L"平均運動二次微分値の1/6倍:%.8lf\n", output.nddot);
   wprintf(L"抗力項:%.8lf\n", output.bstar);

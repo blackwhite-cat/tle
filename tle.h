@@ -23,7 +23,7 @@ struct OutputTLE {
   int rev;  // line 2, column 64-68.
   wchar_t classification;  // line 1, column 8-9.
   wchar_t id_3[4];  // line 1, column 15-18.
-  double epcoh_days;  // line 1, column 21-33.
+  double epoch_days;  // line 1, column 21-33.
   double ndot;  // line 1, column 34-44.
   double nddot;  // line 1, column 45-53.
   double bstar;  // line 1, column 54-62.
