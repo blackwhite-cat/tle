@@ -7,13 +7,13 @@
 #define TLE_H_
 #include <wchar.h>
 #include <string>
-struct InputTLE {
+namespace sat {
+struct TLEDesc {
   std::wstring line_0;
   std::wstring line_1;
   std::wstring line_2;
 };
-struct OutputTLE {
-  int num;  // line 1, column 1-2.
+struct TLEData {
   int sat_num;  // line 1, column 3-7.
   int id_1;  // line 1, column 10-11.
   int id_2;  // line 1, column 12-14.
@@ -35,5 +35,6 @@ struct OutputTLE {
   double no;  // line 2, column 53-63.
   std::wstring name;  // line 0, column 1-24.
 };
-bool ReadTLE(const InputTLE& input, OutputTLE* output);
+bool ReadTLE(const TLEDesc& desc, TLEData* tle);
+}  // namespace sat
 #endif  // TLE_H_
