@@ -59,31 +59,45 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   // The mean motion differential level 1.
   output->ndot = _wtof(buf_1[8]);
   // The mean motion differential level 2.
-  for (int i = 0; i < 6; ++i) tmp[i] = buf_1[9][i];
-  if (buf_1[9][7] == L' ') {
-    tmp[6] = L'\0';
+  if (buf_1[9][0] == L'-') {
+    tmp[0] = L'-';
   } else {
-    tmp[6] = L'E';
+    tmp[0] = L'+';
+  }
+  tmp[1] = L'.';
+  for (int i = 0; i < 5; ++i) tmp[2 + i] = buf_1[9][1 + i];
+  if (buf_1[9][7] == L' ') {
+    tmp[7] = L'\0';
+  } else {
+    tmp[7] = L'E';
     if (buf_1[9][6] == L'-') {
-      tmp[7] = L'-';
+      tmp[8] = L'-';
     } else {
-      tmp[7] = L'+';
+      tmp[8] = L'+';
     }
-    tmp[8] = buf_1[9][7];
+    tmp[9] = buf_1[9][7];
+    tmp[10] = L'\0';
   }
   output->nddot = _wtof(tmp);
   // The drag.
-  for (int i = 0; i < 6; ++i) tmp[i] = buf_1[10][i];
-  if (buf_1[10][7] == L' ') {
-    tmp[6] = L'\0';
+  if (buf_1[10][0] == L'-') {
+    tmp[0] = L'-';
   } else {
-    tmp[6] = L'E';
+    tmp[0] = L'+';
+  }
+  tmp[1] = L'.';
+  for (int i = 0; i < 5; ++i) tmp[2 + i] = buf_1[10][1 + i];
+  if (buf_1[10][7] == L' ') {
+    tmp[7] = L'\0';
+  } else {
+    tmp[7] = L'E';
     if (buf_1[10][6] == L'-') {
-      tmp[7] = L'-';
+      tmp[8] = L'-';
     } else {
-      tmp[7] = L'+';
+      tmp[8] = L'+';
     }
-    tmp[8] = buf_1[10][7];
+    tmp[9] = buf_1[10][7];
+    tmp[10] = L'\0';
   }
   output->bstar = _wtof(tmp);
   // The simulation model.

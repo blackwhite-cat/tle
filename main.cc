@@ -20,10 +20,10 @@ void Test(const wchar_t* line_0, const wchar_t* line_1, const wchar_t* line_2){
   // The TLE in read.
   ReadTLE(input, &output);
   // The line 0 information is shown.
-  wprintf(L"\nLine 0:\n");
+  wprintf(L"\n%s\n", line_0);
   wprintf(L"衛星名:%s\n", output.name.c_str());
   // The line 1 information is shown.
-  wprintf(L"\nLine 1:\n");
+  wprintf(L"\n%s\n", line_1);
   wprintf(L"衛星カタログ番号:%d\n", output.sat_num);
   wprintf(L"軍事機密種別:%c\n", output.classification);
   wprintf(L"国際識別番号（打ち上げ年下二桁）:%d\n", output.id_1);
@@ -37,7 +37,7 @@ void Test(const wchar_t* line_0, const wchar_t* line_1, const wchar_t* line_2){
   wprintf(L"軌道モデル:%d\n", output.model);
   wprintf(L"軌道要素通番:%d\n", output.s_num);
   // The line 2 information is shown.
-  wprintf(L"\nLine 2:\n");
+  wprintf(L"\n%s\n", line_2);
   wprintf(L"軌道傾斜角:%.8lf\n", output.inclo);
   wprintf(L"昇交点赤経:%.8lf\n", output.nodeo);
   wprintf(L"離心率:%.8lf\n", output.ecco);
