@@ -40,9 +40,9 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   input.line_2.copy(buf_2[7], 11, 52);  // The mean motion.
   input.line_2.copy(buf_2[8], 5, 63);  // The rev count.
   // The catalog number.
-  output->catalog_num = _wtoi(buf_1[1]);
+  output->sat_num = _wtoi(buf_1[1]);
   // The military secret level.
-  output->mil_level = buf_1[2][0];
+  output->classification = buf_1[2][0];
   // The international id 1.
   output->id_1 = _wtoi(buf_1[3]);
   // The international id 2.
@@ -53,11 +53,11 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
   output->id_3[2] = buf_1[5][2];
   output->id_3[3] = L'\0';
   // The epoch 1.
-  output->epoch_1 = _wtoi(buf_1[6]);
+  output->epoch_year = _wtoi(buf_1[6]);
   // The epoch 2.
-  output->epoch_2 = _wtof(buf_1[7]);
+  output->epcoh_days = _wtof(buf_1[7]);
   // The mean motion differential level 1.
-  output->mm_1 = _wtof(buf_1[8]);
+  output->ndot = _wtof(buf_1[8]);
   // The mean motion differential level 2.
   for (int i = 0; i < 6; ++i) tmp[i] = buf_1[9][i];
   if (buf_1[9][7] == L' ') {
@@ -71,7 +71,7 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
     }
     tmp[8] = buf_1[9][7];
   }
-  output->mm_2 = _wtof(tmp);
+  output->nddot = _wtof(tmp);
   // The drag.
   for (int i = 0; i < 6; ++i) tmp[i] = buf_1[10][i];
   if (buf_1[10][7] == L' ') {
@@ -85,28 +85,28 @@ bool ReadTLE(const InputTLE& input, OutputTLE* output) {
     }
     tmp[8] = buf_1[10][7];
   }
-  output->b_star = _wtof(tmp);
+  output->bstar = _wtof(tmp);
   // The simulation model.
   output->model = _wtoi(buf_1[11]);
   // The TLE serial number.
   output->s_num = _wtoi(buf_1[12]);
 
   // The inclination.
-  output->incl = _wtof(buf_2[2]);
+  output->inclo = _wtof(buf_2[2]);
   // The right ascension of ascending node.
-  output->raan = _wtof(buf_2[3]);
+  output->nodeo = _wtof(buf_2[3]);
   // The eccentricity.
   tmp[0] = L'0';
   tmp[1] = L'.';
   for (int i = 0; i < 7; ++i) tmp[2 + i] = buf_2[4][i];
   tmp[9] = L'\0';
-  output->eccn = _wtof(tmp);
+  output->ecco = _wtof(tmp);
   // The argument of perigee.
-  output->argp = _wtof(buf_2[5]);
+  output->argpo = _wtof(buf_2[5]);
   // The mean anomaly.
-  output->ma = _wtof(buf_2[6]);
+  output->mo = _wtof(buf_2[6]);
   // The mean motion.
-  output->mm = _wtof(buf_2[7]);
+  output->no = _wtof(buf_2[7]);
   // The rev count.
   output->rev = _wtoi(buf_2[8]);
   return true;

@@ -24,26 +24,26 @@ void Test(const wchar_t* line_0, const wchar_t* line_1, const wchar_t* line_2){
   wprintf(L"衛星名:%s\n", output.name.c_str());
   // The line 1 information is shown.
   wprintf(L"\nLine 1:\n");
-  wprintf(L"衛星カタログ番号:%d\n", output.catalog_num);
-  wprintf(L"軍事機密種別:%c\n", output.mil_level);
+  wprintf(L"衛星カタログ番号:%d\n", output.sat_num);
+  wprintf(L"軍事機密種別:%c\n", output.classification);
   wprintf(L"国際識別番号（打ち上げ年下二桁）:%d\n", output.id_1);
   wprintf(L"国際識別番号（打ち上げ通番）:%d\n", output.id_2);
   wprintf(L"国際識別番号（飛翔体通番）:%s\n", output.id_3);
-  wprintf(L"元期（年下二桁）:%d\n", output.epoch_1);
-  wprintf(L"元期（通日）:%.8lf\n", output.epoch_2);
-  wprintf(L"平均運動一次微分値の1/2倍:%.8lf\n", output.mm_1);
-  wprintf(L"平均運動二次微分値の1/6倍:%.8lf\n", output.mm_2);
-  wprintf(L"抗力項:%.8lf\n", output.b_star);
+  wprintf(L"元期（年下二桁）:%d\n", output.epoch_year);
+  wprintf(L"元期（通日）:%.8lf\n", output.epcoh_days);
+  wprintf(L"平均運動一次微分値の1/2倍:%.8lf\n", output.ndot);
+  wprintf(L"平均運動二次微分値の1/6倍:%.8lf\n", output.nddot);
+  wprintf(L"抗力項:%.8lf\n", output.bstar);
   wprintf(L"軌道モデル:%d\n", output.model);
   wprintf(L"軌道要素通番:%d\n", output.s_num);
   // The line 2 information is shown.
   wprintf(L"\nLine 2:\n");
-  wprintf(L"軌道傾斜角:%.8lf\n", output.incl);
-  wprintf(L"昇交点赤経:%.8lf\n", output.raan);
-  wprintf(L"離心率:%.8lf\n", output.eccn);
-  wprintf(L"近地点引数:%.8lf\n", output.argp);
-  wprintf(L"平均近点角:%.8lf\n", output.ma);
-  wprintf(L"平均運動:%.8lf\n", output.mm);
+  wprintf(L"軌道傾斜角:%.8lf\n", output.inclo);
+  wprintf(L"昇交点赤経:%.8lf\n", output.nodeo);
+  wprintf(L"離心率:%.8lf\n", output.ecco);
+  wprintf(L"近地点引数:%.8lf\n", output.argpo);
+  wprintf(L"平均近点角:%.8lf\n", output.mo);
+  wprintf(L"平均運動:%.8lf\n", output.no);
   wprintf(L"元期における通算周回数:%d\n", output.rev);
 }
 int wmain(int argc, char* argv[]) {
