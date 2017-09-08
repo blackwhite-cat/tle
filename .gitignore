@@ -20,7 +20,7 @@
 *.bak
 
 # release files
-*release*
+release/
 
 # Visual Studio profiler
 *.psess
