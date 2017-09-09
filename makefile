@@ -8,11 +8,11 @@ TARGET = test.exe
 PDB = test.pdb
 MAP = test.map
 RES =
-SRC = test.cc
-OBJ = $(OUTDIR)/test.obj
+SRC = test.cc tle.cc
+OBJ = $(OUTDIR)/test.obj $(OUTDIR)/tle.obj
 LIBS = "kernel32.lib" "user32.lib" "gdi32.lib" "winspool.lib" "comdlg32.lib"\
 "advapi32.lib" "shell32.lib" "ole32.lib" "oleaut32.lib" "uuid.lib"\
-"odbc32.lib" "odbccp32.lib" "tle.lib"
+"odbc32.lib" "odbccp32.lib"
 
 # Debug build
 CPPFLAGS = /nologo /W4 /Zi /O2 /MT /D"UNICODE" /D"_UNICODE" /D"DEBUG" /TP\
