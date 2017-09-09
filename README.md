@@ -33,7 +33,7 @@ Line 1とLine 2のチェックサムは利用せずに捨てている
 $ git clone https://github.com/mkaminaga/tle
 $ cd tle
 $ vim tle.mk
-$ sjis nmake /f tle.mk
+$ nmake /f tle.mk | iconv -f cp932 -t utf-8
 ```
 
 注意点は、`nmake`を実行する前に[tle.mk](tle.mk)を編集し、`CC`をclコンパイラのパスに、`LINK`をリンカのパスに変更することである。
@@ -62,7 +62,7 @@ $ sjis nmake /f tle.mk
 |int sat_num|衛星カタログ番号|なし|
 |int id_1|国際衛星識別符号 (打上げ年の下2桁)|なし|
 |int id_2|国際衛星識別符号 (その年の打上げの通番)|なし|
-|int model|この軌道要素を算出した軌道モデル<br>'1':SGP<br>'2':SGP4<br>'3':SDP4<br>'4':SGP8<br>'5':SDP8||
+|int model|この軌道要素を算出した軌道モデル<br>'1':SGP<br>'2':SGP4<br>'3':SDP4<br>'4':SGP8<br>'5':SDP8|なし|
 |int s_num|軌道要素通番|なし|
 |int epoch_year|この軌道要素の元期 (年の下2桁)|年|
 |int rev|元期における通算周回数|rev|
