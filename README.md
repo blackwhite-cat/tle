@@ -67,7 +67,7 @@ $ nmake /f tle.mk | iconv -f cp932 -t utf-8
 |int epoch_year|この軌道要素の元期 (年の下2桁)|年|
 |int rev|元期における通算周回数|rev|
 |wchar_t classification|軍事機密種別<br>'S':秘匿<br>'U':公開|なし|
-|wchar_t id_3|際衛星識別符号 (その打上げによる飛行体の通番)|なし|
+|wchar_t id_3[3]|際衛星識別符号 (その打上げによる飛行体の通番)|なし|
 |double epoch_days|元期 (続き) (その年の通日、時刻を表す小数)|日|
 |double ndot|平均運動の1次微分値を2で割った値|rev/day^2|
 |double nddot|平均運動の2次微分値を6で割った値|rev/day^3|
