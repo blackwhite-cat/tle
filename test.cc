@@ -6,12 +6,15 @@
   // Note: Save this file with BOM.
 #include <assert.h>
 #include <stdio.h>
-#include <locale.h>
 #include "./tle.h"
 void Test(const wchar_t* line_0, const wchar_t* line_1, const wchar_t* line_2){
   assert(line_0);
   assert(line_1);
   assert(line_2);
+  wprintf(L"\n");
+  wprintf(L"%ls\n", line_0);
+  wprintf(L"%ls\n", line_1);
+  wprintf(L"%ls\n", line_2);
   // The TLE description structure is set.
   sat::TLEDesc desc;
   desc.line_0 = line_0;
@@ -21,35 +24,35 @@ void Test(const wchar_t* line_0, const wchar_t* line_1, const wchar_t* line_2){
   sat::TLEData tle;
   sat::ReadTLE(desc, &tle);
   // The line 0 information is shown.
-  wprintf(L"\n%s\n", line_0);
-  wprintf(L"衛星名:%s\n", tle.name.c_str());
+  wprintf(L"line 0\n");
+  wprintf(L"name:%ls\n", tle.name.c_str());
   // The line 1 information is shown.
-  wprintf(L"\n%s\n", line_1);
-  wprintf(L"衛星カタログ番号:%d\n", tle.sat_num);
-  wprintf(L"軍事機密種別:%c\n", tle.classification);
-  wprintf(L"国際識別番号（打ち上げ年下二桁）:%d\n", tle.id_1);
-  wprintf(L"国際識別番号（打ち上げ通番）:%d\n", tle.id_2);
-  wprintf(L"国際識別番号（飛翔体通番）:%s\n", tle.id_3);
-  wprintf(L"元期（年下二桁）:%d\n", tle.epoch_year);
-  wprintf(L"元期（通日）:%.8lf\n", tle.epoch_days);
-  wprintf(L"平均運動一次微分値の1/2倍:%.8lf\n", tle.ndot);
-  wprintf(L"平均運動二次微分値の1/6倍:%.8lf\n", tle.nddot);
-  wprintf(L"抗力項:%.8lf\n", tle.bstar);
-  wprintf(L"軌道モデル:%d\n", tle.model);
-  wprintf(L"軌道要素通番:%d\n", tle.s_num);
+  wprintf(L"\n");
+  wprintf(L"line 1\n");
+  wprintf(L"sat_num:%d\n", tle.sat_num);
+  wprintf(L"classification:%c\n", tle.classification);
+  wprintf(L"id_1:%d\n", tle.id_1);
+  wprintf(L"id_2:%d\n", tle.id_2);
+  wprintf(L"id_3:%ls\n", tle.id_3);
+  wprintf(L"epoch year:%d\n", tle.epoch_year);
+  wprintf(L"epoch days:%.8lf\n", tle.epoch_days);
+  wprintf(L"ndot:%.8lf\n", tle.ndot);
+  wprintf(L"nddot:%.8lf\n", tle.nddot);
+  wprintf(L"bstar:%.8lf\n", tle.bstar);
+  wprintf(L"model:%d\n", tle.model);
+  wprintf(L"s_num:%d\n", tle.s_num);
   // The line 2 information is shown.
-  wprintf(L"\n%s\n", line_2);
-  wprintf(L"軌道傾斜角:%.8lf\n", tle.inclo);
-  wprintf(L"昇交点赤経:%.8lf\n", tle.nodeo);
-  wprintf(L"離心率:%.8lf\n", tle.ecco);
-  wprintf(L"近地点引数:%.8lf\n", tle.argpo);
-  wprintf(L"平均近点角:%.8lf\n", tle.mo);
-  wprintf(L"平均運動:%.8lf\n", tle.no);
-  wprintf(L"元期における通算周回数:%d\n", tle.rev);
+  wprintf(L"\n");
+  wprintf(L"line 2\n");
+  wprintf(L"inclo:%.8lf\n", tle.inclo);
+  wprintf(L"nodeo:%.8lf\n", tle.nodeo);
+  wprintf(L"ecco:%.8lf\n", tle.ecco);
+  wprintf(L"argpo:%.8lf\n", tle.argpo);
+  wprintf(L"mo:%.8lf\n", tle.mo);
+  wprintf(L"no:%.8lf\n", tle.no);
+  wprintf(L"rev:%d\n", tle.rev);
 }
 int main(int argc, char* argv[]) {
-  // The Japanese local is used for console output.
-  setlocale(LC_ALL, "Japanese");
   // The test data is set.
   // TLE data from NORAD, acquired at 2017/9/7 14:00:00 (JST).
   // http://celestrak.com/NORAD/elements/cubesat.txt

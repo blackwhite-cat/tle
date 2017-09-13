@@ -1,4 +1,4 @@
-﻿  // @file tle.cc
+  // @file tle.cc
   // @brief TLE elements resolver.
   // @author Mamoru Kaminaga
   // @date 2017-09-07 12:52:18
