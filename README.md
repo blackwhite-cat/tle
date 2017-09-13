@@ -53,7 +53,7 @@ $ make -f tle.mk
 使用方法
 ----
 clの場合、リンク時に`tle.lib`を指定すること。<br>
-gccの場合、リンク時に`tle.lib`を指定すること。<br>
+gccの場合、リンク時に`libtle.a`を指定すること。<br>
 makefileは必要に応じて書き換えること。<br>
 
 リファレンス
