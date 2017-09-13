@@ -47,7 +47,7 @@ void Test(const wchar_t* line_0, const wchar_t* line_1, const wchar_t* line_2){
   wprintf(L"平均運動:%.8lf\n", tle.no);
   wprintf(L"元期における通算周回数:%d\n", tle.rev);
 }
-int wmain(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
   // The Japanese local is used for console output.
   setlocale(LC_ALL, "Japanese");
   // The test data is set.

@@ -14,6 +14,7 @@ bool ReadTLE(const TLEDesc& desc, TLEData* tle) {
   wchar_t buf_1[13][S_MAX] = {0};
   wchar_t buf_2[9][S_MAX] = {0};
   wchar_t tmp[S_MAX] = {0};
+  wchar_t** pp = nullptr;
   // The line 0 is processed.
   tle->name = desc.line_0;
   // The line 1 is expanded.
@@ -41,24 +42,24 @@ bool ReadTLE(const TLEDesc& desc, TLEData* tle) {
   desc.line_2.copy(buf_2[7], 11, 52);  // The mean motion.
   desc.line_2.copy(buf_2[8], 5, 63);  // The rev count.
   // The catalog number.
-  tle->sat_num = _wtoi(buf_1[1]);
+  tle->sat_num = wcstol(buf_1[1], pp, 10);
   // The military secret level.
   tle->classification = buf_1[2][0];
   // The international id 1.
-  tle->id_1 = _wtoi(buf_1[3]);
+  tle->id_1 = wcstol(buf_1[3], pp, 10);
   // The international id 2.
-  tle->id_2 = _wtoi(buf_1[4]);
+  tle->id_2 = wcstol(buf_1[4], pp, 10);
   // The international id 3.
   tle->id_3[0] = buf_1[5][0];
   tle->id_3[1] = buf_1[5][1];
   tle->id_3[2] = buf_1[5][2];
   tle->id_3[3] = L'\0';
   // The epoch 1.
-  tle->epoch_year = _wtoi(buf_1[6]);
+  tle->epoch_year = wcstol(buf_1[6], pp, 10);
   // The epoch 2.
-  tle->epoch_days = _wtof(buf_1[7]);
+  tle->epoch_days = wcstof(buf_1[7], pp);
   // The mean motion differential level 1.
-  tle->ndot = _wtof(buf_1[8]);
+  tle->ndot = wcstof(buf_1[8], pp);
   // The mean motion differential level 2.
   if (buf_1[9][0] == L'-') {
     tmp[0] = L'-';
@@ -79,7 +80,7 @@ bool ReadTLE(const TLEDesc& desc, TLEData* tle) {
     tmp[9] = buf_1[9][7];
     tmp[10] = L'\0';
   }
-  tle->nddot = _wtof(tmp);
+  tle->nddot = wcstof(tmp, pp);
   // The drag.
   if (buf_1[10][0] == L'-') {
     tmp[0] = L'-';
@@ -100,30 +101,30 @@ bool ReadTLE(const TLEDesc& desc, TLEData* tle) {
     tmp[9] = buf_1[10][7];
     tmp[10] = L'\0';
   }
-  tle->bstar = _wtof(tmp);
+  tle->bstar = wcstof(tmp, pp);
   // The simulation model.
-  tle->model = _wtoi(buf_1[11]);
+  tle->model = wcstol(buf_1[11], pp, 10);
   // The TLE serial number.
-  tle->s_num = _wtoi(buf_1[12]);
+  tle->s_num = wcstol(buf_1[12], pp, 10);
 
   // The inclination.
-  tle->inclo = _wtof(buf_2[2]);
+  tle->inclo = wcstof(buf_2[2], pp);
   // The right ascension of ascending node.
-  tle->nodeo = _wtof(buf_2[3]);
+  tle->nodeo = wcstof(buf_2[3], pp);
   // The eccentricity.
   tmp[0] = L'0';
   tmp[1] = L'.';
   for (int i = 0; i < 7; ++i) tmp[2 + i] = buf_2[4][i];
   tmp[9] = L'\0';
-  tle->ecco = _wtof(tmp);
+  tle->ecco = wcstof(tmp, pp);
   // The argument of perigee.
-  tle->argpo = _wtof(buf_2[5]);
+  tle->argpo = wcstof(buf_2[5], pp);
   // The mean anomaly.
-  tle->mo = _wtof(buf_2[6]);
+  tle->mo = wcstof(buf_2[6], pp);
   // The mean motion.
-  tle->no = _wtof(buf_2[7]);
+  tle->no = wcstof(buf_2[7], pp);
   // The rev count.
-  tle->rev = _wtoi(buf_2[8]);
+  tle->rev = wcstol(buf_2[8], pp, 10);
   return true;
 }
 }  // namespace sat

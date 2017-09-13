@@ -7,11 +7,16 @@
 #define TLE_H_
 #include <wchar.h>
 #include <string>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 namespace sat {
 struct TLEDesc {
-  std::wstring line_0;
-  std::wstring line_1;
-  std::wstring line_2;
+  std::basic_string<wchar_t> line_0;
+  std::basic_string<wchar_t> line_1;
+  std::basic_string<wchar_t> line_2;
 };
 struct TLEData {
   int sat_num;  // line 1, column 3-7.
@@ -33,8 +38,13 @@ struct TLEData {
   double argpo;  // line 2, column 35-43.
   double mo;  // line 2, column 44-52.
   double no;  // line 2, column 53-63.
-  std::wstring name;  // line 0, column 1-24.
+  std::basic_string<wchar_t> name;  // line 0, column 1-24.
 };
 bool ReadTLE(const TLEDesc& desc, TLEData* tle);
 }  // namespace sat
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif  // TLE_H_
