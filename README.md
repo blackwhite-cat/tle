@@ -12,12 +12,13 @@ Line 1とLine 2のチェックサムは利用せずに捨てている
 
 要求
 ----
- * [Microsoft Visual Studio Community 2017](https://www.microsoft.com/ja-jp/dev/products/community.aspx)<br>
- * [Windows SDK](https://developer.microsoft.com/ja-jp/windows/downloads/windows-8-1-sdk)<br>
+ * Windowsで使用する場合
+   * [Microsoft Visual Studio Community 2017](https://www.microsoft.com/ja-jp/dev/products/community.aspx)<br>
+   * [Windows SDK](https://developer.microsoft.com/ja-jp/windows/downloads/windows-8-1-sdk)<br>
 
 注意
 ----
-以下の説明では[Cygwin](https://www.cygwin.com/)や[MSYS2](http://www.msys2.org/)等のターミナル上で、コマンドラインを用いてビルドを実行することを想定する。<br>
+以下の説明ではコマンドラインビルドを想定して説明する。Windowsの場合には、開発者コマンドプロンプトや[Cygwin](https://www.cygwin.com/)、[MSYS2](http://www.msys2.org/)等のターミナルを用いること。<br>
 
 インストール
 ----
@@ -26,17 +27,22 @@ Line 1とLine 2のチェックサムは利用せずに捨てている
 ------
 [releaseページ](https://github.com/mkaminaga/tle/releases)からzipファイルをダウンロードし、適当なディレクトリに展開する。<br>
 
-方法2: 自前でビルド
+方法2: クローン & ビルド
 ----
 
+windowsの場合
 ```
 $ git clone https://github.com/mkaminaga/tle
 $ cd tle
-$ vim tle.mk
-$ nmake /f tle.mk | iconv -f cp932 -t utf-8
+$ vim tle_win.mk
+$ nmake /f tle_win.mk | iconv -f cp932 -t utf-8
 ```
 
-注意点は、`nmake`を実行する前に[tle.mk](tle.mk)を編集し、`CC`をclコンパイラのパスに、`LINK`をリンカのパスに変更することである。
+使用方法
+----
+Windowsの場合、リンク時に`tle.lib`を指定すること。
+
+makefileのコンパイラとリンカのパスは必要に応じて書き換えること。
 
 実装の説明
 ----
