@@ -7,10 +7,11 @@
 *.obj
 *.pdb
 *.d
+*.a
 *.exe
 *.out
 *.stackdump
-# *.ico
+*.ico
 *.sdf
 *.res
 *.sln
@@ -18,6 +19,7 @@
 *.bmp
 *.opendb
 *.bak
+build/*
 
 # release files
 release/
