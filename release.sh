@@ -4,6 +4,11 @@
 # Shell script for release
 # Copyright 2017 Mamoru Kaminaga
 
+if [ "$1" = "" ]; then
+  echo 'need args, 1->gcc, 2->cl'
+  exit 1
+fi
+
 # Required: The latest version.
 VERSION=`git tag | tail -n 1`
 
@@ -11,48 +16,56 @@ VERSION=`git tag | tail -n 1`
 OUTDIR="release"
 mkdir -p ${OUTDIR}
 
-# Output sub directory is created
-TARGET="${OUTDIR}/release_${VERSION}"
-mkdir -p ${TARGET}
-
-# common are copied.
-cp *.md ${TARGET}
-
 # files for gcc (Ubuntu)
-touch *.cc
-make
-if [ $? != 0 ]; then exit 1; fi
+if [ "$1" = "1" ]; then
+  touch *.cc
+  make
+  if [ $? != 0 ]; then exit 1; fi
 
-touch *.cc
-make -f tle.mk
-if [ $? != 0 ]; then exit 1; fi
+  touch *.cc
+  make -f tle.mk
+  if [ $? != 0 ]; then exit 1; fi
 
-GCCDIR=${TARGET}/gcc
-mkdir -p ${GCCDIR}
-cp *.cc ${GCCDIR}			# Source files
-cp *.h ${GCCDIR}			# Header files
-cp makefile ${GCCDIR}		# Makefiles
-cp tle.mk ${GCCDIR}			# Lib makefiles
-cp *.a ${GCCDIR}			# Library files
-cp *.out ${GCCDIR}			# Executable files
+  # Output sub directory is created
+  TARGET="${OUTDIR}/release_${VERSION}_gcc"
+  mkdir -p ${TARGET}
 
-# files for vc (Windows)
-touch *.cc
-nmake /f tle_cl.mk | iconv -f cp932 -t utf-8
-if [ $? != 0 ]; then exit 1; fi
+  mkdir -p ${TARGET}
+  cp *.md ${TARGET}       # descriptions
+  cp *.cc ${TARGET}			  # Source files
+  cp *.h ${TARGET}			  # Header files
+  cp makefile ${TARGET}		# Makefiles
+  cp tle.mk ${TARGET}			# Lib makefiles
+  cp *.a ${TARGET}			  # Library files
+  cp *.out ${TARGET}			# Executable files
 
-touch *.cc
-nmake /f makefile_vc.mk | iconv -f cp932 -t utf-8
-if [ $? != 0 ]; then exit 1; fi
+  # Zip file is created.
+  zip -r ${TARGET}.zip ${TARGET}
+elif [ "$1" = "2" ]; then
+  # files for VC (Win32)
+  touch *.cc
+  nmake /f tle_cl.mk | iconv -f cp932 -t utf-8
+  if [ $? != 0 ]; then exit 1; fi
 
-CLDIR=${TARGET}/vc
-mkdir -p ${CLDIR}
-cp *.cc ${CLDIR}			# Source files
-cp *.h ${CLDIR}				# Header files
-cp makefile_vc.mk ${CLDIR}	# Makefiles
-cp tle_vc.mk ${CLDIR}		# Lib makefiles
-cp *.lib ${CLDIR}			# Lib files
-cp *.exe ${CLDIR}			# Executable files
+  touch *.cc
+  nmake /f makefile_vc.mk | iconv -f cp932 -t utf-8
+  if [ $? != 0 ]; then exit 1; fi
 
-# Zip file is created.
-zip -r ${TARGET}.zip ${TARGET}
+  # Output sub directory is created
+  TARGET="${OUTDIR}/release_${VERSION}_win32"
+  mkdir -p ${TARGET}
+
+  mkdir -p ${TARGET}
+  cp *.md ${TARGET}           # descriptions
+  cp *.cc ${TARGET}			      # Source files
+  cp *.h ${TARGET}				      # Header files
+  cp makefile_vc.mk ${TARGET}	# Makefiles
+  cp tle_vc.mk ${TARGET}		    # Lib makefiles
+  cp *.lib ${TARGET}			      # Lib files
+  cp *.exe ${TARGET}			      # Executable files
+
+  # Zip file is created.
+  zip -r ${TARGET}.zip ${TARGET}
+fi
+
+exit 0
