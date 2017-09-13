@@ -4,11 +4,15 @@ TLE(2行軌道要素形式)から人工衛星の各種軌道要素を取得す�
 
 概要
 ----
-TLEは[NORAD Two-Line Element Sets](http://celestrak.com/NORAD/elements/)などから入手することができる<br>
+TLEの0行目、w行目、2行目を入力すると、各要素を切り出した構造体を返す。<br>
 TLEは下図のようなフォーマットで記述されている<br>
 ![tle](doc/TLE.png)<br>
-このプログラムはこれらのデータを解読する<br>
 Line 1とLine 2のチェックサムは利用せずに捨てている
+TLEは[NORAD Two-Line Element Sets](http://celestrak.com/NORAD/elements/)などから入手することができる<br>
+
+利用できる環境
+----
+cl (Windows 7) Version 19.11.25507.1 for x86とgcc (Ubuntu 5.4.0-6ubuntu1~16.04.2) 5.4.0 20160609でビルドを確認した。
 
 要求
 ----
@@ -18,7 +22,7 @@ Line 1とLine 2のチェックサムは利用せずに捨てている
 
 注意
 ----
-以下の説明ではコマンドラインビルドを想定して説明する。Windowsの場合には、開発者コマンドプロンプトや[Cygwin](https://www.cygwin.com/)、[MSYS2](http://www.msys2.org/)等のターミナルを用いること。<br>
+Windowsの場合には、開発者コマンドプロンプトや[Cygwin](https://www.cygwin.com/)、[MSYS2](http://www.msys2.org/)等のターミナルを用いてビルドする方法を説明する。<br>
 
 インストール
 ----
@@ -27,54 +31,63 @@ Line 1とLine 2のチェックサムは利用せずに捨てている
 ------
 [releaseページ](https://github.com/mkaminaga/tle/releases)からzipファイルをダウンロードし、適当なディレクトリに展開する。<br>
 
-方法2: クローン & ビルド
+
+方法2: クローン & ビルド -> スタティックリンクライブラリの作成
 ----
 
-windowsの場合
+clの場合
 ```
 $ git clone https://github.com/mkaminaga/tle
 $ cd tle
-$ vim tle_win.mk
-$ nmake /f tle_win.mk | iconv -f cp932 -t utf-8
+$ vim tle_vc.mk
+$ nmake /f tle_vc.mk | iconv -f cp932 -t utf-8
+```
+
+gccの場合
+```
+$ git clone https://github.com/mkaminaga/tle
+$ cd tle
+$ make -f tle.mk
 ```
 
 使用方法
 ----
-Windowsの場合、リンク時に`tle.lib`を指定すること。
+clの場合、リンク時に`tle.lib`を指定すること。
+gccの場合、リンク時に`tle.lib`を指定すること。
 
 makefileのコンパイラとリンカのパスは必要に応じて書き換えること。
 
-実装の説明
+リファレンス
 ----
 
-入力データ
+入力データ構造体
 ------
 `struct sat::TLEDesc`が入力データを格納する構造体である。<br>
 リストは宣言順<br>
 
 |メンバ変数|説明|単位|
 |---|---|---|
-|std::wstring line_0|TLE 0 行目|なし|
-|std::wstring line_1|TLE 1 行目|なし|
-|std::wstring line_2|TLE 2 行目|なし|
+|std::basic\_string<wchar_t> line\_0|TLE 0 行目|なし|
+|std::basic\_string<wchar_t> line\_1|TLE 1 行目|なし|
+|std::basic\_string<wchar_t> line\_2|TLE 2 行目|なし|
 
-出力データ
+出力データ構造体
 ------
 `struct sat::TLEData`が出力データを格納する構造体である。<br>
 リストは宣言順<br>
 
 |メンバ変数|説明|単位|
 |---|---|---|
-|int sat_num|衛星カタログ番号|なし|
-|int id_1|国際衛星識別符号 (打上げ年の下2桁)|なし|
-|int id_2|国際衛星識別符号 (その年の打上げの通番)|なし|
+|int sat\_num|衛星カタログ番号|なし|
+|int id\_1|国際衛星識別符号 (打上げ年の下2桁)|なし|
+|int id\_2|国際衛星識別符号 (その年の打上げの通番)|なし|
 |int model|この軌道要素を算出した軌道モデル<br>'1':SGP<br>'2':SGP4<br>'3':SDP4<br>'4':SGP8<br>'5':SDP8|なし|
-|int s_num|軌道要素通番|なし|
-|int epoch_year|この軌道要素の元期 (年の下2桁)|年|
+|int s\_num|軌道要素通番|なし|
+|int epoch\_year|この軌道要素の元期 (年の下2桁)|年|
 |int rev|元期における通算周回数|rev|
-|wchar_t classification|軍事機密種別<br>'S':秘匿<br>'U':公開|なし|
-|wchar_t id_3[3]|際衛星識別符号 (その打上げによる飛行体の通番)|なし|
-|double epoch_days|元期 (続き) (その年の通日、時刻を表す小数)|日|
+|wchar\_t classification|軍事機密種別<br>'S':秘匿<br>'U':公開|なし|
+|wchar\_t id\_3[3]|際衛星識別符号 (その打上げによる飛行体の通番)|なし|
+|double epoch\_days|元期 (続き) (その年の通日、時刻を表す小数)|日|
 |double ndot|平均運動の1次微分値を2で割った値|rev/day^2|
 |double nddot|平均運動の2次微分値を6で割った値|rev/day^3|
 |double bstar|B\* (B STAR) 抗力項|なし|
@@ -84,7 +97,7 @@ makefileのコンパイラとリンカのパスは必要に応じて書き換え
 |double argpo|近地点引数|deg|
 |double mo|平均近点角|deg|
 |double no|平均運動|deg|
-|std::wstring name|衛星名|なし|
+|std::basic\_string<wchar\_t> name|衛星名|なし|
 
 参考: [2行軌道要素形式(Wikipedia)](https://ja.wikipedia.org/wiki/2%E8%A1%8C%E8%BB%8C%E9%81%93%E8%A6%81%E7%B4%A0%E5%BD%A2%E5%BC%8F)
 
@@ -99,19 +112,23 @@ bool ReadTLE(const TLEDesc& desc, TLEData* tle);
 
 サンプルのビルドと実行
 ----
-以下のコマンドを実行する。
 
+clの場合
 ```
 $ cd tle
-$ nmake
-$ ./test.exe | iconv -f cp932 -t utf-8
+$ nmake /f makefile_vc.mk
+$ ./test.exe
+```
+
+gccの場合
+```
+$ cd tle
+$ make
+$ ./test.exe
 ```
 
 実行結果
-
 ```
-$ ./test.exe | iconv -f cp932 -t utf-8
-
 ISS (ZARYA)
 衛星名:ISS (ZARYA)
 
