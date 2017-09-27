@@ -10,14 +10,14 @@ if [ "$1" = "" ]; then
 fi
 
 # Required: The latest version.
-VERSION=`git tag | tail -n 1`
+VERSION='v2.1.0'
 
 # Output directory is created
 OUTDIR="release"
 mkdir -p ${OUTDIR}
 
-# files for gcc (Ubuntu)
 if [ "$1" = "1" ]; then
+  # Build test for Ubuntu.
   touch *.cc
   make
   if [ $? != 0 ]; then exit 1; fi
@@ -27,45 +27,32 @@ if [ "$1" = "1" ]; then
   if [ $? != 0 ]; then exit 1; fi
 
   # Output sub directory is created
-  TARGET="${OUTDIR}/release_${VERSION}_gcc"
-  mkdir -p ${TARGET}
-
-  mkdir -p ${TARGET}
-  cp *.md ${TARGET}       # descriptions
-  cp *.cc ${TARGET}			  # Source files
-  cp *.h ${TARGET}			  # Header files
-  cp makefile ${TARGET}		# Makefiles
-  cp tle.mk ${TARGET}			# Lib makefiles
-  cp *.a ${TARGET}			  # Library files
-  cp *.out ${TARGET}			# Executable files
-
-  # Zip file is created.
-  zip -r ${TARGET}.zip ${TARGET}
+  TARGET="${OUTDIR}/release_${VERSION}_ubuntu"
 elif [ "$1" = "2" ]; then
-  # files for VC (Win32)
+  # Build test for Windows.
   touch *.cc
-  nmake /f tle_cl.mk | iconv -f cp932 -t utf-8
+  nmake /f tle_windows.mk | iconv -f cp932 -t utf-8
   if [ $? != 0 ]; then exit 1; fi
 
   touch *.cc
-  nmake /f makefile_vc.mk | iconv -f cp932 -t utf-8
+  nmake /f makefile_windows.mk | iconv -f cp932 -t utf-8
   if [ $? != 0 ]; then exit 1; fi
 
   # Output sub directory is created
-  TARGET="${OUTDIR}/release_${VERSION}_win32"
-  mkdir -p ${TARGET}
-
-  mkdir -p ${TARGET}
-  cp *.md ${TARGET}           # descriptions
-  cp *.cc ${TARGET}			      # Source files
-  cp *.h ${TARGET}				      # Header files
-  cp makefile_vc.mk ${TARGET}	# Makefiles
-  cp tle_vc.mk ${TARGET}		    # Lib makefiles
-  cp *.lib ${TARGET}			      # Lib files
-  cp *.exe ${TARGET}			      # Executable files
-
-  # Zip file is created.
-  zip -r ${TARGET}.zip ${TARGET}
+  TARGET="${OUTDIR}/release_${VERSION}_windows"
 fi
+
+mkdir -p ${TARGET}
+rm -r ${TARGET}
+
+mkdir -p ${TARGET}
+cp *.md ${TARGET}  # descriptions
+cp *.txt ${TARGET}  # descriptions
+cp *.h ${TARGET}  # Header files
+cp *.a ${TARGET}  # Library files for Ubuntu
+cp *.lib ${TARGET}  # Library files for Windows
+
+# Zip file is created.
+zip -r ${TARGET}.zip ${TARGET}
 
 exit 0

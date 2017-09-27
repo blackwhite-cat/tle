@@ -1,6 +1,6 @@
 # makefile
 # date 2017-09-13
-# Copyright 2017 Mamoru kaminaga
+# Copyright 2017 Mamoru Kaminaga
 TARGET = libtle.a
 SRC = tle.cc
 OBJDIR = build

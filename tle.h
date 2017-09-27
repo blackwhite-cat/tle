@@ -7,11 +7,6 @@
 #define TLE_H_
 #include <wchar.h>
 #include <string>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 namespace sat {
 struct TLEDesc {
   std::basic_string<wchar_t> line_0;
@@ -42,9 +37,4 @@ struct TLEData {
 };
 bool ReadTLE(const TLEDesc& desc, TLEData* tle);
 }  // namespace sat
-
-#ifdef __cplusplus
-}
-#endif
-
 #endif  // TLE_H_
