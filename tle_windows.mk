@@ -14,4 +14,5 @@ $(TARGET): $(OBJ)
 	$(LIB) /OUT:$(TARGET) $(OBJ)
 
 .cc{$(OUTDIR)}.obj:
+	@[ -d $(OBJDIR) ] || mkdir $(OBJDIR)
 	$(CC) $(CCFLAGS) /c $<

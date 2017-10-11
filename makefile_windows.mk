@@ -26,4 +26,5 @@ $(TARGET): $(OBJ) $(RES)
 	$(LINK) $(LFLAGS) /OUT:$(TARGET) $(OBJ) $(RES)
 
 .cc{$(OBJDIR)}.obj:
+	@[ -d $(OBJDIR) ] || mkdir $(OBJDIR)
 	$(CC) $(CPPFLAGS) /Fo"$(OBJDIR)\\" /c $<
